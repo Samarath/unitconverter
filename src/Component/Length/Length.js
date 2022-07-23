@@ -1,36 +1,44 @@
-import { useState } from "react"
+import { useSelector, useDispatch } from 'react-redux';
+import { changeValue } from "../../Action/index";
 
 const Length = () => {
 
-    // const [number1, setnumber1] = useState('');
-    // const [number2, setnumber2] = useState('');
-    const [getUnitDetail, setUnitDetail] = useState(['meter', 'meter']);
+    // const [myState, setUnitDetail] = useState(['meter', 'meter']);
+    const myState = useSelector((state) => state.changeTheValue)
+    const dispatch = useDispatch();
    
 
     const getNum1 = (value) => {
 
         const secondInput = document.getElementById('length1'); 
-        if(getUnitDetail[0] === 'meter' && getUnitDetail[1] === 'centimeter'){
+        if(myState[0] === 'meter' && myState[1] === 'centimeter'){
             secondInput.value = value*100;
-        }else if(getUnitDetail[0] === 'meter' && getUnitDetail[1] === 'kilometer'){
+        }else if(myState[0] === 'meter' && myState[1] === 'kilometer'){
             secondInput.value = value/1000;
-        }else if(getUnitDetail[0] === getUnitDetail[1]){
+        }else if(myState[0] === myState[1]){
             secondInput.value = value
+        }else if(myState[0] === 'centimeter' && myState[1] === 'meter'){
+            secondInput.value = value/100
+        }else if(myState[0] === 'kilometer' && myState[1] === 'meter'){
+            secondInput.value = value*1000;
+        }else if(myState[0] === 'centimeter' && myState[1] === 'kilometer'){
+            secondInput.value = value/100000;
         }
-
-        
     }
 
     const getNum2 = (value) => {
-        // setnumber2(value)
-        const secondInput = document.getElementById('length');
 
-        if(getUnitDetail[1] === 'centimeter' && getUnitDetail[0] === 'meter'){            
+        const secondInput = document.getElementById('length');
+        if(myState[1] === 'centimeter' && myState[0] === 'meter'){           
             secondInput.value = value/100
-        }else if(getUnitDetail[1] === 'kilometer' && getUnitDetail[0] === 'meter'){
+        }else if(myState[1] === 'kilometer' && myState[0] === 'meter'){
             secondInput.value = value*1000;
-        }else if(getUnitDetail[0] === getUnitDetail[1]){
+        }else if(myState[0] === myState[1]){
             secondInput.value = value
+        }else if(myState[1] === 'meter' && myState[0] === 'centimeter'){
+            secondInput.value = value*100;
+        }else if(myState[1] === 'kilometer' && myState[0] === 'centimeter'){
+            secondInput.value = value*100000;
         }
     }
 
@@ -40,16 +48,31 @@ const Length = () => {
         const inputs = document.getElementById('length');
         const inputs1 = document.getElementById('length1');
 
-        setUnitDetail([doc1.value, doc2.value]);
+        console.log(myState);
+        dispatch(changeValue([doc1.value, doc2.value]));
+        // setUnitDetail([doc1.value, doc2.value]);
 
-        // if(doc1.value === 'meter' && doc2.value === 'centimeter'){
-        //     inputs1.value = inputs.value*100;
-        // }
-        console.log(getUnitDetail[0]=== doc1, getUnitDetail[0]);
-        console.log(getUnitDetail[1]=== doc2, getUnitDetail[1]);
-        console.log(doc1.value, inputs.value, 'doc 1')
-        console.log(doc2.value, inputs1.value, 'doc 2')
+        //for second unit change
 
+        if(doc1.value === 'meter' && doc2.value === 'centimeter'){     
+            if(inputs.value !== ''){
+                inputs1.value = inputs.value * 100;
+            }
+        }else if(doc1.value === 'meter' && doc2.value === 'kilometer'){
+            inputs1.value = inputs.value/1000;
+        }else if(doc1.value === 'meter' && doc2.value === 'meter'){
+            inputs1.value = inputs.value
+        }else if(doc1.value === 'centimeter' && doc2.value === 'meter'){
+            inputs1.value = inputs.value/100;
+        }else if(doc1.value === 'centimeter' && doc2.value === 'kilometer'){
+            inputs1.value = inputs.value/100000;
+        }else if(doc1.value === 'kilometer' && doc2.value === 'meter'){
+            inputs1.value = inputs.value*1000;
+        }else if(doc1.value === 'kilometer' && doc2.value === 'centimeter'){
+            inputs1.value = inputs.value*100000;
+        }else if(doc1.value === doc2.value){
+            inputs1.value = inputs.value
+        }
         
     }
 

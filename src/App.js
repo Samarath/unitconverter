@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
+import {changeMeasurements} from './Action/index';
+
 import Length from './Component/Length/Length';
 import Temprature from './Component/Temprature/Temprature';
 import Volume from './Component/Volume/Volume';
@@ -7,28 +9,31 @@ import Weight from './Component/Weight/Weight';
 
 function App() {
 
-  const [unitComp, setUnitComp] = useState('Length');
+  const myState = useSelector((state) => state.changeTheMeasurements)
+  const dispatch = useDispatch();
 
   const selectUnits = (value) => {
-    setUnitComp(value.target.value);
-    // console.log(value.target.value);
+    dispatch(changeMeasurements(value.target.value));
   }
 
   const loadComponent = () => {
-    if(unitComp === 'Length'){
+    if(myState === 'Length'){
       return < Length />
-    }else if(unitComp === 'Temprature'){
+    }else if(myState === 'Temprature'){
       return <Temprature />
-    }else if(unitComp === 'Volume'){
+    }else if(myState === 'Volume'){
       return < Volume />
-    }else if(unitComp === 'Weight'){
+    }else if(myState === 'Weight'){
       return <Weight />
     }
   }
 
   return (
     <div className="App">
-      <select name="mesurments" id="mesurments" onChange={(value) => selectUnits(value)}>
+
+      <h1>Conversion App</h1>
+
+      <select name="mesurments" id="mesurments" onChange={(value) => selectUnits(value)} defaultValue={'mesurements'}>
         <option value='mesurements' disabled>mesurments</option>
         <option value="Length">Length</option>
         <option value="Temprature">Temprature</option>
